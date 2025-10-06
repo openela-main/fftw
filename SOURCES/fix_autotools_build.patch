@@ -1,0 +1,13 @@
+diff --git a/FFTW3Config.cmake.in b/FFTW3Config.cmake.in
+index 6b1fbc2..e8a2ed8 100644
+--- a/FFTW3Config.cmake.in
++++ b/FFTW3Config.cmake.in
+@@ -10,8 +10,6 @@ set (FFTW3@PREC_SUFFIX@_LIBRARIES fftw3@PREC_SUFFIX@)
+ set (FFTW3@PREC_SUFFIX@_LIBRARY_DIRS @CMAKE_INSTALL_FULL_LIBDIR@)
+ set (FFTW3@PREC_SUFFIX@_INCLUDE_DIRS @CMAKE_INSTALL_FULL_INCLUDEDIR@)
+
+-include ("${CMAKE_CURRENT_LIST_DIR}/FFTW3LibraryDepends.cmake")
+-
+ if (CMAKE_VERSION VERSION_LESS 2.8.3)
+   set (CMAKE_CURRENT_LIST_DIR)
+ endif ()
