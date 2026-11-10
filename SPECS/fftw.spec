@@ -1,5 +1,5 @@
 %bcond_without mpich
-%ifarch s390 s390x
+%ifarch s390 s390x %{ix86}
 %bcond_with openmpi
 %else
 %bcond_without openmpi
@@ -14,7 +14,7 @@
 
 Name:           fftw
 Version:        3.3.8
-Release:        12%{?dist}
+Release:        14%{?dist}
 Summary:        A Fast Fourier Transform library
 License:        GPLv2+
 URL:            http://www.fftw.org
@@ -348,6 +348,9 @@ do
   # Force linking the _mpi.so libraries with the mpi libs.  This works because
   # we get rid of all of the non-mpi components of these builds
   export CC=mpicc
+  if [ $mpi = "openmpi" ]; then
+      export MPIRUN="mpirun --oversubscribe"
+  fi
   %{configure} ${BASEFLAGS} ${prec_flags[iprec]} --enable-mpi \
    --libdir=%{_libdir}/$mpi/lib \
    --bindir=%{_libdir}/$mpi/bin \
@@ -413,6 +416,8 @@ done
 export OMPI_MCA_btl="^vader"
 %endif
 %endif
+# Allow oversubscription with openmpi
+export OMPI_MCA_rmaps_base_oversubscribe=1
 for mpi in %{mpi_list}
 do
  module load mpi/${mpi}-%{_arch}
@@ -543,6 +548,12 @@ done
 %endif
 
 %changelog
+* Wed Apr 29 2026 Joe VLcek <jvlcek@redhat.com> - 3.3.8-14
+- Disable openmpi for i686 architecture
+
+* Tue Mar 17 2026 Joe VLcek <jvlcek@redhat.com> - 3.3.8-13
+- Fix for OpenMPI build with < 4 processors
+
 * Mon Aug 09 2021 Mohan Boddu <mboddu@redhat.com> - 3.3.8-12
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
   Related: rhbz#1991688
