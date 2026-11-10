@@ -21,14 +21,13 @@
 %endif
 
 Name:           fftw
-Version:        3.3.10
-Release:        15%{?dist}
+Version:        3.3.11
+Release:        1%{?dist}
 Summary:        A Fast Fourier Transform library
 # Generally, the code is under GPL but some headers are also under MIT or BSD:
 License:        GPL-2.0-or-later AND MIT AND BSD-2-Clause
 URL:            http://www.fftw.org
 Source0:        http://www.fftw.org/fftw-%{version}.tar.gz
-Patch1:         fix_autotools_build.patch
 
 BuildRequires:  gcc-gfortran
 
@@ -64,6 +63,12 @@ BuildRequires:  environment-modules
 %endif
 BuildRequires:  make
 
+Requires:       %{name}-libs-single%{?_isa} = %{version}-%{release}
+Requires:       %{name}-libs-double%{?_isa} = %{version}-%{release}
+Requires:       %{name}-libs-long%{?_isa} = %{version}-%{release}
+%if %{quad}
+Requires:       %{name}-libs-quad%{?_isa} = %{version}-%{release}
+%endif
 
 %description
 FFTW is a C subroutine library for computing the Discrete Fourier
@@ -542,6 +547,10 @@ done
 %endif
 
 %changelog
+* Wed Aug 05 2026 Siteshwar Vashisht <svashisht@redhat.com> - 3.3.11-1
+- Update to fftw-3.3.11
+  Resolves: RHEL-194538
+
 * Mon Nov 25 2024 Pavel Simovec <psimovec@redhat.com> - 3.3.10-15
 - Enable openmpi for RHEL
 - Resolves: RHEL-65277
